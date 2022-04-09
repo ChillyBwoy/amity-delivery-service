@@ -1,8 +1,8 @@
-export type GraphVertex = string;
+export type Vertex = string;
 
-export interface GraphEdge {
+export interface Edge {
   id: string;
-  from: GraphVertex;
-  to: GraphVertex;
+  from: Vertex;
+  to: Vertex;
   cost: number;
 }

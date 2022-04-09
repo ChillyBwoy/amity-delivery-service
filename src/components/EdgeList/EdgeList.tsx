@@ -5,7 +5,7 @@ import { useItemDeleteHandler } from "../../hooks/useItemDeleteHandler";
 import { useVerticesChoices } from "../../hooks/useVerticesChoices";
 import { AppStoreContext } from "../../store";
 import { edgeDeleteAction, edgeUpdateAction } from "../../store/graph/actions";
-import { GraphEdge } from "../../types";
+import { Edge } from "../../types";
 
 import { EdgeListForm } from "./EdgeListForm";
 import { EdgeListItem } from "./EdgeListItem";
@@ -18,7 +18,7 @@ export const EdgeList: React.FC = () => {
   const choices = useVerticesChoices(state.graph.vertices);
 
   const handleEdgeChange = React.useCallback(
-    (route: GraphEdge) => {
+    (route: Edge) => {
       dispatch(edgeUpdateAction(route));
     },
     [dispatch]

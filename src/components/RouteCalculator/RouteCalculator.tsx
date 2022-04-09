@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { AppStoreContext } from "../../store";
-import { GraphVertex } from "../../types";
+import { Vertex } from "../../types";
 
 const StyledRoot = styled.div``;
 
@@ -13,24 +13,21 @@ const StyledChoices = styled.div``;
 export const RouteCalculator: React.FC = () => {
   const { state } = React.useContext(AppStoreContext);
 
-  const [path, setPath] = React.useState<Array<GraphVertex>>([]);
-  const [vertices, setVertices] = React.useState<Array<GraphVertex>>(
+  const [path, setPath] = React.useState<Array<Vertex>>([]);
+  const [vertices, setVertices] = React.useState<Array<Vertex>>(
     () => state.graph.vertices
   );
 
   const handleAddRoute = React.useCallback(
-    (vertex: GraphVertex) => {
+    (vertex: Vertex) => {
       setPath([...path, vertex]);
 
-      const newVertices = state.graph.edges.reduce<Array<GraphVertex>>(
-        (acc, r) => {
-          if (r.from === vertex && !path.includes(r.to)) {
-            acc.push(r.to);
-          }
-          return acc;
-        },
-        []
-      );
+      const newVertices = state.graph.edges.reduce<Array<Vertex>>((acc, r) => {
+        if (r.from === vertex && !path.includes(r.to)) {
+          acc.push(r.to);
+        }
+        return acc;
+      }, []);
 
       setVertices(newVertices);
     },

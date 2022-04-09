@@ -2,16 +2,16 @@ import React from "react";
 import styled from "styled-components";
 
 import { ItemDeleteHandlerType } from "../../hooks/useItemDeleteHandler";
-import { GraphEdge } from "../../types";
+import { Edge } from "../../types";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
 
 interface EdgeListItemProps {
-  edge: GraphEdge;
+  edge: Edge;
   choices: Array<DropdownOption>;
   deleteStatus: boolean;
   onDelete: ItemDeleteHandlerType;
-  onChange(route: GraphEdge): void;
+  onChange(route: Edge): void;
 }
 
 const StyledRoot = styled.div`

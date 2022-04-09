@@ -1,4 +1,4 @@
-import { GraphEdge, GraphVertex } from "../../types";
+import { Edge, Vertex } from "../../types";
 
 export enum GraphActionType {
   VertexAdd = "VERTEX_ADD",
@@ -9,17 +9,17 @@ export enum GraphActionType {
 
 export interface VertexAddAction {
   type: GraphActionType.VertexAdd;
-  vertex: GraphVertex;
+  vertex: Vertex;
 }
 
 export interface VertexDeleteAction {
   type: GraphActionType.VertexDelete;
-  vertex: GraphVertex;
+  vertex: Vertex;
 }
 
 export interface EdgeUpdateAction {
   type: GraphActionType.EdgeUpdate;
-  edge: GraphEdge;
+  edge: Edge;
 }
 
 export interface EdgeDeleteAction {
@@ -34,6 +34,6 @@ export type GraphAction =
   | EdgeDeleteAction;
 
 export interface GraphState {
-  vertices: Array<GraphVertex>;
-  edges: Array<GraphEdge>;
+  vertices: Array<Vertex>;
+  edges: Array<Edge>;
 }

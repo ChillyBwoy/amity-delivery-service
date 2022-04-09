@@ -1,13 +1,13 @@
 import data from "../data/data.json";
 
 import { AppState } from "../store";
-import { GraphEdge, GraphVertex } from "../types";
+import { Edge, Vertex } from "../types";
 
 export function useMockAppState(): AppState {
   const cache: Record<string, boolean> = {};
 
-  const edges: Array<GraphEdge> = [];
-  const vertices: Array<GraphVertex> = [];
+  const edges: Array<Edge> = [];
+  const vertices: Array<Vertex> = [];
 
   for (const raw of data) {
     if (!cache[raw.from]) {

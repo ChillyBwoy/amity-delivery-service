@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { useMockAppState } from "../../hooks/useMockAppState";
 import { AppStoreContextProvider } from "../../store";
+import { Graph } from "../Graph/Graph";
 
 import { GlobalStyles } from "../GlobalStyles/GlobalStyles";
 import { RouteCalculator } from "../RouteCalculator/RouteCalculator";
@@ -45,7 +46,9 @@ export const App: React.FC = () => {
       <AppStoreContextProvider state={state}>
         <StyledRoot>
           <StyledHeader>Amity Delivery Service</StyledHeader>
-          <StyledContent></StyledContent>
+          <StyledContent>
+            <Graph />
+          </StyledContent>
           <StyledSidebar>
             <VertexList />
             <hr />

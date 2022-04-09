@@ -2,10 +2,10 @@ import React from "react";
 import styled from "styled-components";
 
 import { ItemDeleteHandlerType } from "../../hooks/useItemDeleteHandler";
-import { GraphVertex } from "../../types";
+import { Vertex } from "../../types";
 
 interface VertexListItemProps {
-  vertex: GraphVertex;
+  vertex: Vertex;
   deleteStatus: boolean;
   onDelete: ItemDeleteHandlerType;
 }

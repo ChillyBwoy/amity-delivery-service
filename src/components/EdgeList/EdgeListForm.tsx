@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { GraphVertex } from "../../types";
+import { Vertex } from "../../types";
 
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
@@ -14,15 +14,15 @@ const StyledRoot = styled.div`
 `;
 
 export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
-  const [from, setFrom] = React.useState<GraphVertex | undefined>(undefined);
-  const [to, setTo] = React.useState<GraphVertex | undefined>(undefined);
+  const [from, setFrom] = React.useState<Vertex | undefined>(undefined);
+  const [to, setTo] = React.useState<Vertex | undefined>(undefined);
   const [cost, setCost] = React.useState(1);
 
-  const handleChangeFrom = React.useCallback((value: GraphVertex) => {
+  const handleChangeFrom = React.useCallback((value: Vertex) => {
     setFrom(value);
   }, []);
 
-  const handleChangeTo = React.useCallback((value: GraphVertex) => {
+  const handleChangeTo = React.useCallback((value: Vertex) => {
     setTo(value);
   }, []);
 

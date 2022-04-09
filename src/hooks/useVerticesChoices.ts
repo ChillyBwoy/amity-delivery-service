@@ -1,7 +1,7 @@
 import React from "react";
-import { GraphVertex } from "../types";
+import { Vertex } from "../types";
 
-export function useVerticesChoices(vertices: Array<GraphVertex>) {
+export function useVerticesChoices(vertices: Array<Vertex>) {
   const choices = React.useMemo(() => {
     return vertices.map((vertex) => ({
       name: vertex,
