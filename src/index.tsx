@@ -1,5 +1,6 @@
 import ReactDOM from "react-dom/client";
-import { Root } from "./components/Root/Root";
+
+import { App } from "./components/App/App";
 
 function run() {
   const $root = document.getElementById("root");
@@ -8,7 +9,7 @@ function run() {
   }
 
   const root = ReactDOM.createRoot($root);
-  root.render(<Root />);
+  root.render(<App />);
 }
 
 run();

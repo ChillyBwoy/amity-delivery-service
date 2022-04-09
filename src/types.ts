@@ -1,5 +1,13 @@
+export type GraphVertex = string;
+
 export interface GraphEdge {
-  readonly from: string;
-  readonly to: string;
-  readonly cost: number;
+  id: string;
+  from: GraphVertex;
+  to: GraphVertex;
+  cost: number;
+}
+
+export interface AppState {
+  verticies: Array<GraphVertex>;
+  routes: Array<GraphEdge>;
 }
