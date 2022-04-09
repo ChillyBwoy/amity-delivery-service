@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { useItemDeleteHandler } from "../../hooks/useItemDeleteHandler";
 import { AppStoreContext } from "../../store";
-import { vertexDeleteAction } from "../../store/actions";
+import { vertexDeleteAction } from "../../store/graph/actions";
 
 import { VertexListForm } from "./VertexListForm";
 import { VertexListItem } from "./VertexListItem";
@@ -18,7 +18,7 @@ export const VertexList: React.FC = () => {
 
   return (
     <StyledRoot>
-      {state.verticies.map((v) => (
+      {state.graph.vertices.map((v) => (
         <VertexListItem
           key={v}
           vertex={v}

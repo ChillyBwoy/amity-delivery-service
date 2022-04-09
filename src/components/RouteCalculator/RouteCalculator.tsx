@@ -14,24 +14,27 @@ export const RouteCalculator: React.FC = () => {
   const { state } = React.useContext(AppStoreContext);
 
   const [path, setPath] = React.useState<Array<GraphVertex>>([]);
-  const [verticies, setVerticies] = React.useState<Array<GraphVertex>>(
-    () => state.verticies
+  const [vertices, setVertices] = React.useState<Array<GraphVertex>>(
+    () => state.graph.vertices
   );
 
   const handleAddRoute = React.useCallback(
     (vertex: GraphVertex) => {
       setPath([...path, vertex]);
 
-      const newVerticies = state.routes.reduce<Array<GraphVertex>>((acc, r) => {
-        if (r.from === vertex && !path.includes(r.to)) {
-          acc.push(r.to);
-        }
-        return acc;
-      }, []);
+      const newVertices = state.graph.edges.reduce<Array<GraphVertex>>(
+        (acc, r) => {
+          if (r.from === vertex && !path.includes(r.to)) {
+            acc.push(r.to);
+          }
+          return acc;
+        },
+        []
+      );
 
-      setVerticies(newVerticies);
+      setVertices(newVertices);
     },
-    [path, state.routes]
+    [path, state.graph.edges]
   );
 
   const totalCost = React.useMemo(() => {
@@ -41,14 +44,16 @@ export const RouteCalculator: React.FC = () => {
       const prev = path[i - 1];
       const curr = path[i];
 
-      const route = state.routes.find((r) => r.from === prev && r.to === curr);
+      const route = state.graph.edges.find(
+        (r) => r.from === prev && r.to === curr
+      );
       if (route) {
         cost += route.cost;
       }
     }
 
     return cost;
-  }, [path, state.routes]);
+  }, [path, state.graph.edges]);
 
   return (
     <StyledRoot>
@@ -59,7 +64,7 @@ export const RouteCalculator: React.FC = () => {
         ))}
       </StyledPath>
       <StyledChoices>
-        {verticies.map((v, i) => (
+        {vertices.map((v, i) => (
           <button key={i} onClick={() => handleAddRoute(v)}>
             {v}
           </button>

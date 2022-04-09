@@ -6,8 +6,3 @@ export interface GraphEdge {
   to: GraphVertex;
   cost: number;
 }
-
-export interface AppState {
-  verticies: Array<GraphVertex>;
-  routes: Array<GraphEdge>;
-}

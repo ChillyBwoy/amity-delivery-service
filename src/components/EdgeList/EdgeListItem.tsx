@@ -6,8 +6,8 @@ import { GraphEdge } from "../../types";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
 
-interface RouteListItemProps {
-  route: GraphEdge;
+interface EdgeListItemProps {
+  edge: GraphEdge;
   choices: Array<DropdownOption>;
   deleteStatus: boolean;
   onDelete: ItemDeleteHandlerType;
@@ -18,25 +18,25 @@ const StyledRoot = styled.div`
   display: flex;
 `;
 
-export const RouteListItem: React.FC<RouteListItemProps> = ({
+export const EdgeListItem: React.FC<EdgeListItemProps> = ({
   choices,
-  route,
+  edge,
   deleteStatus,
   onDelete,
   onChange,
 }) => {
   const handleChangeFrom = React.useCallback(
     (value: string) => {
-      onChange({ ...route, from: value });
+      onChange({ ...edge, from: value });
     },
-    [onChange, route]
+    [onChange, edge]
   );
 
   const handleChangeTo = React.useCallback(
     (value: string) => {
-      onChange({ ...route, to: value });
+      onChange({ ...edge, to: value });
     },
-    [onChange, route]
+    [onChange, edge]
   );
 
   const handleChangeCost = React.useCallback(
@@ -47,23 +47,23 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({
       }
 
       if (!Number.isNaN(cost)) {
-        onChange({ ...route, cost });
+        onChange({ ...edge, cost });
       }
     },
-    [onChange, route]
+    [onChange, edge]
   );
 
   const handleDeleteAsk = React.useCallback(() => {
-    onDelete(route.id, "ask");
-  }, [onDelete, route]);
+    onDelete(edge.id, "ask");
+  }, [onDelete, edge]);
 
   const handleDeleteConfirm = React.useCallback(() => {
-    onDelete(route.id, "confirm");
-  }, [onDelete, route]);
+    onDelete(edge.id, "confirm");
+  }, [onDelete, edge]);
 
   const handleDeleteCancel = React.useCallback(() => {
-    onDelete(route.id, "cancel");
-  }, [onDelete, route]);
+    onDelete(edge.id, "cancel");
+  }, [onDelete, edge]);
 
   return (
     <StyledRoot>
@@ -76,18 +76,18 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({
         <>
           <Dropdown
             choices={choices}
-            value={route.from}
+            value={edge.from}
             onChange={handleChangeFrom}
           />
           <Dropdown
             choices={choices}
-            value={route.to}
+            value={edge.to}
             onChange={handleChangeTo}
           />
 
           <TextField
             type="number"
-            value={route.cost}
+            value={edge.cost}
             onChange={handleChangeCost}
           />
 

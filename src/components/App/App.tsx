@@ -6,14 +6,14 @@ import { AppStoreContextProvider } from "../../store";
 
 import { GlobalStyles } from "../GlobalStyles/GlobalStyles";
 import { RouteCalculator } from "../RouteCalculator/RouteCalculator";
-import { RouteList } from "../RouteList/RouteList";
+import { EdgeList } from "../EdgeList/EdgeList";
 import { VertexList } from "../VertexList/VertexList";
 
 const StyledRoot = styled.div`
   height: 100%;
   display: grid;
   grid-template-rows: 5.25rem 1fr;
-  grid-template-columns: 1fr 40%;
+  grid-template-columns: 1fr 30%;
 `;
 
 const StyledHeader = styled.header`
@@ -27,10 +27,13 @@ const StyledHeader = styled.header`
   align-items: center;
 `;
 
-const StyledContent = styled.div``;
+const StyledContent = styled.div`
+  background-color: rosybrown;
+`;
 
 const StyledSidebar = styled.div`
-  background-color: lightgray;
+  box-sizing: border-box;
+  padding: 40px; ;
 `;
 
 export const App: React.FC = () => {
@@ -42,14 +45,13 @@ export const App: React.FC = () => {
       <AppStoreContextProvider state={state}>
         <StyledRoot>
           <StyledHeader>Amity Delivery Service</StyledHeader>
-          <StyledContent>
-            <RouteCalculator />
-          </StyledContent>
+          <StyledContent></StyledContent>
           <StyledSidebar>
             <VertexList />
-            <br />
-            <br />
-            <RouteList />
+            <hr />
+            <EdgeList />
+            <hr />
+            <RouteCalculator />
           </StyledSidebar>
         </StyledRoot>
       </AppStoreContextProvider>

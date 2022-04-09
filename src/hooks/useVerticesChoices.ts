@@ -1,13 +1,13 @@
 import React from "react";
 import { GraphVertex } from "../types";
 
-export function useVerticiesChoices(verticies: Array<GraphVertex>) {
+export function useVerticesChoices(vertices: Array<GraphVertex>) {
   const choices = React.useMemo(() => {
-    return verticies.map((vertex) => ({
+    return vertices.map((vertex) => ({
       name: vertex,
       value: vertex,
     }));
-  }, [verticies]);
+  }, [vertices]);
 
   return choices;
 }

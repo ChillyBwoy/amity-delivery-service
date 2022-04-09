@@ -5,7 +5,7 @@ import { GraphVertex } from "../../types";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
 
-interface RouteListFormProps {
+interface EdgeListFormProps {
   choices: Array<DropdownOption>;
 }
 
@@ -13,7 +13,7 @@ const StyledRoot = styled.div`
   display: flex;
 `;
 
-export const RouteListForm: React.FC<RouteListFormProps> = ({ choices }) => {
+export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
   const [from, setFrom] = React.useState<GraphVertex | undefined>(undefined);
   const [to, setTo] = React.useState<GraphVertex | undefined>(undefined);
   const [cost, setCost] = React.useState(1);

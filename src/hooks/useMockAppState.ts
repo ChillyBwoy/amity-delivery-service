@@ -1,19 +1,21 @@
 import data from "../data/data.json";
-import { AppState, GraphEdge, GraphVertex } from "../types";
+
+import { AppState } from "../store";
+import { GraphEdge, GraphVertex } from "../types";
 
 export function useMockAppState(): AppState {
   const cache: Record<string, boolean> = {};
 
-  const routes: Array<GraphEdge> = [];
-  const verticies: Array<GraphVertex> = [];
+  const edges: Array<GraphEdge> = [];
+  const vertices: Array<GraphVertex> = [];
 
   for (const raw of data) {
     if (!cache[raw.from]) {
       cache[raw.from] = true;
-      verticies.push(raw.from);
+      vertices.push(raw.from);
     }
 
-    routes.push({
+    edges.push({
       id: `${Math.random()}`,
       cost: raw.cost,
       from: raw.from,
@@ -21,5 +23,10 @@ export function useMockAppState(): AppState {
     });
   }
 
-  return { verticies, routes };
+  return {
+    graph: {
+      vertices: vertices,
+      edges,
+    },
+  };
 }

@@ -1,7 +1,13 @@
 import React from "react";
 
-import { AppState } from "../types";
-import { AppActionType, AppAction } from "./types";
+import { GraphAction, GraphState } from "./graph/types";
+import { reducer as graphReducer } from "./graph";
+
+type AppAction = GraphAction;
+
+export interface AppState {
+  graph: GraphState;
+}
 
 interface AppStoreContextProps {
   state: AppState;
@@ -9,8 +15,10 @@ interface AppStoreContextProps {
 }
 
 export const initialState: AppState = {
-  routes: [],
-  verticies: [],
+  graph: {
+    edges: [],
+    vertices: [],
+  },
 };
 
 export const AppStoreContext = React.createContext<AppStoreContextProps>({
@@ -24,55 +32,9 @@ interface AppStoreContextProviderProps {
 }
 
 const reducer = (state: AppState, action: AppAction): AppState => {
-  switch (action.type) {
-    case AppActionType.VertexAdd: {
-      const newVerticies = [...state.verticies, action.vertex];
-
-      return {
-        ...state,
-        verticies: newVerticies,
-      };
-    }
-
-    case AppActionType.VertexDelete: {
-      const newVerticies = state.verticies.filter((v) => v !== action.vertex);
-      const newRoutes = state.routes.filter(
-        (r) => r.from !== action.vertex && r.to !== action.vertex
-      );
-
-      return {
-        routes: newRoutes,
-        verticies: newVerticies,
-      };
-    }
-
-    case AppActionType.RouteUpdate: {
-      const index = state.routes.findIndex((r) => r.id === action.route.id);
-      if (index === -1) {
-        throw new Error("Route not found");
-      }
-
-      const newRoutes = [...state.routes];
-
-      newRoutes[index] = action.route;
-
-      return {
-        ...state,
-        routes: newRoutes,
-      };
-    }
-
-    case AppActionType.RouteDelete: {
-      const newRoutes = state.routes.filter((r) => r.id !== action.id);
-      return {
-        ...state,
-        routes: newRoutes,
-      };
-    }
-
-    default:
-      return state;
-  }
+  return {
+    graph: graphReducer(state.graph, action),
+  };
 };
 
 export const AppStoreContextProvider: React.FC<

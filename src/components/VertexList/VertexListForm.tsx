@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { AppStoreContext } from "../../store";
-import { vertextAddAction } from "../../store/actions";
+import { vertextAddAction } from "../../store/graph/actions";
 import { TextField } from "../TextField/TextField";
 
 const StyledRoot = styled.div`
@@ -27,7 +27,7 @@ export const VertexListForm: React.FC = () => {
   );
 
   const handleSubmit = React.useCallback(() => {
-    const match = state.verticies.find((v) => v === value);
+    const match = state.graph.vertices.find((v) => v === value);
     if (match) {
       setError("Vertex already exists");
       return;
@@ -37,7 +37,7 @@ export const VertexListForm: React.FC = () => {
 
     dispatch(vertextAddAction(value));
     setValue("");
-  }, [dispatch, state.verticies, value]);
+  }, [dispatch, state.graph.vertices, value]);
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {

@@ -13,15 +13,15 @@ export function useItemDeleteHandler(handler: ItemDeleteHandler) {
   const [itemToDelete, setItemToDelete] = React.useState<string | null>(null);
 
   const handleDelete = React.useCallback(
-    (item: string, status: ItemDeleteStatus) => {
+    (id: string, status: ItemDeleteStatus) => {
       switch (status) {
         case "ask": {
-          setItemToDelete(item);
+          setItemToDelete(id);
           break;
         }
 
         case "confirm": {
-          handler(item);
+          handler(id);
           setItemToDelete(null);
           break;
         }
