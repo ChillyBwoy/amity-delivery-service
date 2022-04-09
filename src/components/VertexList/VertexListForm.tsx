@@ -2,17 +2,18 @@ import React from "react";
 import styled from "styled-components";
 
 import { AppStoreContext } from "../../store";
-import { addVertextAction } from "../../store/actions";
+import { vertextAddAction } from "../../store/actions";
+import { TextField } from "../TextField/TextField";
 
-interface VertexListFormProps {}
-
-const StyledRoot = styled.div``;
+const StyledRoot = styled.div`
+  display: flex;
+`;
 
 const StyledError = styled.div`
   color: red;
 `;
 
-export const VertexListForm: React.FC<VertexListFormProps> = () => {
+export const VertexListForm: React.FC = () => {
   const { dispatch, state } = React.useContext(AppStoreContext);
 
   const [value, setValue] = React.useState("");
@@ -34,7 +35,7 @@ export const VertexListForm: React.FC<VertexListFormProps> = () => {
       setError("");
     }
 
-    dispatch(addVertextAction(value));
+    dispatch(vertextAddAction(value));
     setValue("");
   }, [dispatch, state.verticies, value]);
 
@@ -49,7 +50,7 @@ export const VertexListForm: React.FC<VertexListFormProps> = () => {
 
   return (
     <StyledRoot>
-      <input
+      <TextField
         type="text"
         onChange={handleChange}
         value={value}
@@ -57,7 +58,7 @@ export const VertexListForm: React.FC<VertexListFormProps> = () => {
       />
       {error && <StyledError>{error}</StyledError>}
 
-      <button onClick={handleSubmit}>+</button>
+      <button onClick={handleSubmit}>Add</button>
     </StyledRoot>
   );
 };

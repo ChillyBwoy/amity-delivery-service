@@ -1,13 +1,19 @@
 import { GraphEdge, GraphVertex } from "../types";
 
 export enum AppActionType {
-  AddVertex = "ADD_VERTEX",
+  VertexAdd = "VERTEX_ADD",
+  VertexDelete = "VERTEX_DELETE",
   RouteUpdate = "ROUTE_UPDATE",
   RouteDelete = "ROUTE_DELETE",
 }
 
 export interface VertexAddAction {
-  type: AppActionType.AddVertex;
+  type: AppActionType.VertexAdd;
+  vertex: GraphVertex;
+}
+
+export interface VertexDeleteAction {
+  type: AppActionType.VertexDelete;
   vertex: GraphVertex;
 }
 
@@ -21,4 +27,8 @@ export interface RouteDeleteAction {
   id: string;
 }
 
-export type AppAction = VertexAddAction | RouteUpdateAction | RouteDeleteAction;
+export type AppAction =
+  | VertexAddAction
+  | VertexDeleteAction
+  | RouteUpdateAction
+  | RouteDeleteAction;

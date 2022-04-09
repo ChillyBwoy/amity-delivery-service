@@ -25,11 +25,23 @@ interface AppStoreContextProviderProps {
 
 const reducer = (state: AppState, action: AppAction): AppState => {
   switch (action.type) {
-    case AppActionType.AddVertex: {
+    case AppActionType.VertexAdd: {
       const newVerticies = [...state.verticies, action.vertex];
 
       return {
         ...state,
+        verticies: newVerticies,
+      };
+    }
+
+    case AppActionType.VertexDelete: {
+      const newVerticies = state.verticies.filter((v) => v !== action.vertex);
+      const newRoutes = state.routes.filter(
+        (r) => r.from !== action.vertex && r.to !== action.vertex
+      );
+
+      return {
+        routes: newRoutes,
         verticies: newVerticies,
       };
     }

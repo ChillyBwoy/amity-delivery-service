@@ -4,12 +4,19 @@ import {
   AppActionType,
   RouteUpdateAction,
   RouteDeleteAction,
+  VertexDeleteAction,
 } from "./types";
 
-export function addVertextAction(vertex: GraphVertex): VertexAddAction {
-  console.log(vertex);
+export function vertextAddAction(vertex: GraphVertex): VertexAddAction {
   return {
-    type: AppActionType.AddVertex,
+    type: AppActionType.VertexAdd,
+    vertex,
+  };
+}
+
+export function vertexDeleteAction(vertex: GraphVertex): VertexDeleteAction {
+  return {
+    type: AppActionType.VertexDelete,
     vertex,
   };
 }

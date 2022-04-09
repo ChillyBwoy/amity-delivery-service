@@ -1,16 +1,17 @@
 import React from "react";
 import styled from "styled-components";
 
-import { AppStoreContext } from "../../store";
-import { routeUpdateAction } from "../../store/actions";
+import { ItemDeleteHandlerType } from "../../hooks/useItemDeleteHandler";
 import { GraphEdge } from "../../types";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
+import { TextField } from "../TextField/TextField";
 
 interface RouteListItemProps {
   route: GraphEdge;
   choices: Array<DropdownOption>;
   deleteStatus: boolean;
-  onDelete(route: GraphEdge, status: "ask" | "confirm" | "cancel"): void;
+  onDelete: ItemDeleteHandlerType;
+  onChange(route: GraphEdge): void;
 }
 
 const StyledRoot = styled.div`
@@ -22,51 +23,54 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({
   route,
   deleteStatus,
   onDelete,
+  onChange,
 }) => {
-  const { dispatch } = React.useContext(AppStoreContext);
-
   const handleChangeFrom = React.useCallback(
     (value: string) => {
-      dispatch(
-        routeUpdateAction({
-          ...route,
-          from: value,
-        })
-      );
+      onChange({ ...route, from: value });
     },
-    [dispatch, route]
+    [onChange, route]
   );
 
   const handleChangeTo = React.useCallback(
     (value: string) => {
-      dispatch(
-        routeUpdateAction({
-          ...route,
-          to: value,
-        })
-      );
+      onChange({ ...route, to: value });
     },
-    [dispatch, route]
+    [onChange, route]
   );
 
-  const handleRouteDeleteAsk = React.useCallback(() => {
-    onDelete(route, "ask");
+  const handleChangeCost = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      const cost = parseInt(event.target.value, 10);
+      if (cost <= 0) {
+        return;
+      }
+
+      if (!Number.isNaN(cost)) {
+        onChange({ ...route, cost });
+      }
+    },
+    [onChange, route]
+  );
+
+  const handleDeleteAsk = React.useCallback(() => {
+    onDelete(route.id, "ask");
   }, [onDelete, route]);
 
-  const handleRouteDeleteConfirm = React.useCallback(() => {
-    onDelete(route, "confirm");
+  const handleDeleteConfirm = React.useCallback(() => {
+    onDelete(route.id, "confirm");
   }, [onDelete, route]);
 
-  const handleRouteDeleteCancel = React.useCallback(() => {
-    onDelete(route, "cancel");
+  const handleDeleteCancel = React.useCallback(() => {
+    onDelete(route.id, "cancel");
   }, [onDelete, route]);
 
   return (
     <StyledRoot>
       {deleteStatus ? (
         <>
-          <button onClick={handleRouteDeleteConfirm}>confirm</button>
-          <button onClick={handleRouteDeleteCancel}>cancel</button>
+          <button onClick={handleDeleteConfirm}>confirm</button>
+          <button onClick={handleDeleteCancel}>cancel</button>
         </>
       ) : (
         <>
@@ -81,7 +85,13 @@ export const RouteListItem: React.FC<RouteListItemProps> = ({
             onChange={handleChangeTo}
           />
 
-          <button onClick={handleRouteDeleteAsk}>X</button>
+          <TextField
+            type="number"
+            value={route.cost}
+            onChange={handleChangeCost}
+          />
+
+          <button onClick={handleDeleteAsk}>X</button>
         </>
       )}
     </StyledRoot>

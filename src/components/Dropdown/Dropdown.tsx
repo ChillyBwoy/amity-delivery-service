@@ -7,7 +7,7 @@ export interface DropdownOption {
 
 interface DropdownProps<T> {
   choices: Array<T>;
-  value: number | string;
+  value: number | string | undefined;
   onChange(value: number | string): void;
 }
 
@@ -23,6 +23,7 @@ export const Dropdown = <T extends DropdownOption>(props: DropdownProps<T>) => {
 
   return (
     <select value={value} onChange={handleChange}>
+      <option />
       {choices.map((choice, i) => (
         <option key={i} value={choice.value}>
           {choice.name}

@@ -5,6 +5,7 @@ import { useMockAppState } from "../../hooks/useMockAppState";
 import { AppStoreContextProvider } from "../../store";
 
 import { GlobalStyles } from "../GlobalStyles/GlobalStyles";
+import { RouteCalculator } from "../RouteCalculator/RouteCalculator";
 import { RouteList } from "../RouteList/RouteList";
 import { VertexList } from "../VertexList/VertexList";
 
@@ -41,9 +42,13 @@ export const App: React.FC = () => {
       <AppStoreContextProvider state={state}>
         <StyledRoot>
           <StyledHeader>Amity Delivery Service</StyledHeader>
-          <StyledContent></StyledContent>
+          <StyledContent>
+            <RouteCalculator />
+          </StyledContent>
           <StyledSidebar>
             <VertexList />
+            <br />
+            <br />
             <RouteList />
           </StyledSidebar>
         </StyledRoot>
