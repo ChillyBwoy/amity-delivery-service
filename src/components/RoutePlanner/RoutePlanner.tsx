@@ -3,69 +3,93 @@ import styled from "styled-components";
 
 import { AppStoreContext } from "../../store";
 import { Vertex } from "../../types";
+import { Ball } from "../Ball/Ball";
+import { Button } from "../Button/Button";
 
 import { useRouteTotalCost } from "./RoutePlanner.hooks";
-import { RoutePlannerItem } from "./RoutePlannerItem";
 
 const StyledRoot = styled.div``;
 
-const StyledPath = styled.div``;
+const StyledPath = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+`;
 
-const StyledChoices = styled.div``;
+const StyledChoices = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  padding: 12px 0;
+`;
+
+const StyledCost = styled(Ball)`
+  font-size: 1.5rem;
+  background: transparent;
+  color: #000;
+`;
+
+const StyledChoiceBall = styled(Ball)`
+  margin: 0 4px;
+  background-color: #ffd400;
+  cursor: pointer;
+
+  &:first-child {
+    margin-left: 0;
+  }
+`;
 
 export const RoutePlanner: React.FC = () => {
   const { state } = React.useContext(AppStoreContext);
 
   const [route, setRoute] = React.useState<Array<Vertex>>([]);
-  const [vertices, setVertices] = React.useState<Array<Vertex>>(
-    () => state.graph.vertices
-  );
+  const [lastVertex, setLastVertex] = React.useState<Vertex | null>(null);
 
   const handleAddRoute = React.useCallback(
     (vertex: Vertex) => {
-      const newVertices = state.graph.edges.reduce<Array<Vertex>>((acc, r) => {
-        if (r.from === vertex && !route.includes(r.to)) {
-          acc.push(r.to);
-        }
-
-        return acc;
-      }, []);
-      setVertices(newVertices);
-
       setRoute([...route, vertex]);
-    },
-    [route, state.graph.edges]
-  );
-
-  const handleDeleteRoute = React.useCallback(
-    (vertex: Vertex) => {
-      const newRoute = route.slice(0, -1);
-      setRoute(newRoute);
+      setLastVertex(vertex);
     },
     [route]
   );
+
+  const vertices = React.useMemo(() => {
+    if (!lastVertex) {
+      return state.graph.vertices;
+    }
+
+    return state.graph.edges.reduce<Array<Vertex>>((acc, r) => {
+      if (r.from === lastVertex && !route.includes(r.to)) {
+        acc.push(r.to);
+      }
+
+      return acc;
+    }, []);
+  }, [lastVertex, route, state.graph.edges, state.graph.vertices]);
+
+  const handleResetClick = React.useCallback(() => {
+    setRoute([]);
+    setLastVertex(null);
+  }, []);
 
   const totalCost = useRouteTotalCost(route, state.graph.edges);
 
   return (
     <StyledRoot>
-      <h3>{totalCost}</h3>
-      <StyledPath>
-        {route.map((r, i) => (
-          <RoutePlannerItem
-            key={i}
-            vertex={r}
-            onDelete={i === route.length - 1 ? handleDeleteRoute : undefined}
-          />
-        ))}
-      </StyledPath>
+      <Button onClick={handleResetClick}>reset</Button>
       <StyledChoices>
         {vertices.map((v, i) => (
-          <button key={i} onClick={() => handleAddRoute(v)}>
+          <StyledChoiceBall key={i} onClick={() => handleAddRoute(v)}>
             {v}
-          </button>
+          </StyledChoiceBall>
         ))}
       </StyledChoices>
+      <StyledPath>
+        {route.map((r, i) => (
+          <Ball key={i} arrow={route.length > 1}>
+            {r}
+          </Ball>
+        ))}
+        {totalCost > 0 && <StyledCost>{totalCost}</StyledCost>}
+      </StyledPath>
     </StyledRoot>
   );
 };

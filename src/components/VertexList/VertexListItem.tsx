@@ -4,13 +4,27 @@ import styled from "styled-components";
 import { ItemDeleteHandlerType } from "../../hooks/useItemDeleteHandler";
 import { Vertex } from "../../types";
 
+import { Ball } from "../Ball/Ball";
+import { Button } from "../Button/Button";
+
 interface VertexListItemProps {
   vertex: Vertex;
   deleteStatus: boolean;
   onDelete: ItemDeleteHandlerType;
 }
 
-const StyledRoot = styled.div``;
+const StyledRoot = styled.div`
+  display: flex;
+  padding: 8px;
+`;
+
+const StyledDelete = styled.div`
+  display: flex;
+`;
+
+const StyledButton = styled(Button)`
+  margin: 0 4px;
+`;
 
 export const VertexListItem: React.FC<VertexListItemProps> = ({
   vertex,
@@ -31,16 +45,17 @@ export const VertexListItem: React.FC<VertexListItemProps> = ({
 
   return (
     <StyledRoot>
-      {vertex}
-
-      {deleteStatus ? (
-        <>
-          <button onClick={handleDeleteConfirm}>confirm</button>
-          <button onClick={handleDeleteCancel}>cancel</button>
-        </>
-      ) : (
-        <button onClick={handleDeleteAsk}>X</button>
-      )}
+      <Ball>{vertex}</Ball>
+      <StyledDelete>
+        {deleteStatus ? (
+          <>
+            <StyledButton onClick={handleDeleteConfirm}>✓</StyledButton>
+            <StyledButton onClick={handleDeleteCancel}>&times;</StyledButton>
+          </>
+        ) : (
+          <StyledButton onClick={handleDeleteAsk}>&times;</StyledButton>
+        )}
+      </StyledDelete>
     </StyledRoot>
   );
 };

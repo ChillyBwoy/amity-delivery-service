@@ -1,4 +1,5 @@
 import React from "react";
+import styled from "styled-components";
 
 export interface DropdownOption {
   name: string;
@@ -11,6 +12,18 @@ interface DropdownProps<T> {
   onChange(value: number | string): void;
 }
 
+const StyledSelect = styled.select`
+  display: block;
+  width: 100%;
+  height: 38px;
+  padding: 8px 12px;
+  font-size: 14px;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+`;
+
 export const Dropdown = <T extends DropdownOption>(props: DropdownProps<T>) => {
   const { choices, value, onChange } = props;
 
@@ -22,13 +35,13 @@ export const Dropdown = <T extends DropdownOption>(props: DropdownProps<T>) => {
   );
 
   return (
-    <select value={value} onChange={handleChange}>
+    <StyledSelect value={value} onChange={handleChange}>
       <option />
       {choices.map((choice, i) => (
         <option key={i} value={choice.value}>
           {choice.name}
         </option>
       ))}
-    </select>
+    </StyledSelect>
   );
 };

@@ -10,7 +10,6 @@ import { GraphVertex } from "./GraphVertex";
 const StyledRoot = styled.div`
   width: 100%;
   height: 100%;
-  background-color: #eee;
   position: relative;
 `;
 

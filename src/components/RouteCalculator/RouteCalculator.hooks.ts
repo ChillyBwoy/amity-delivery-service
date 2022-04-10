@@ -2,9 +2,9 @@ import { Edge, Vertex } from "../../types";
 
 export function traverse(edges: Array<Edge>, from: Vertex, to: Vertex) {
   const visited: Record<Vertex, boolean> = {};
-  const result: Array<Vertex[]> = [];
+  const result: Array<Edge[]> = [];
 
-  function recur(source: Vertex, dest: Vertex, localPathList: Array<string>) {
+  function recur(source: Vertex, dest: Vertex, localPathList: Array<Edge>) {
     if (source === dest) {
       result.push([...localPathList]);
       return;
@@ -12,16 +12,11 @@ export function traverse(edges: Array<Edge>, from: Vertex, to: Vertex) {
 
     const adjacents = edges.filter((e) => e.from === source);
 
-    console.log(
-      ":::",
-      adjacents.map((x) => `${x.from} -> ${x.to}`).join(" | ")
-    );
-
     visited[source] = true;
 
     for (const edge of adjacents) {
       if (!visited[edge.to]) {
-        localPathList.push(edge.to);
+        localPathList.push(edge);
         recur(edge.to, dest, localPathList);
         localPathList.pop();
       }
@@ -32,9 +27,7 @@ export function traverse(edges: Array<Edge>, from: Vertex, to: Vertex) {
     return localPathList;
   }
 
-  recur(from, to, [from]);
-
-  console.log(result.map((x) => x.join(" -> ")).join("\n"));
+  recur(from, to, []);
 
   return result;
 }

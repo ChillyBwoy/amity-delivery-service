@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { ItemDeleteHandlerType } from "../../hooks/useItemDeleteHandler";
 import { Edge } from "../../types";
+import { Button } from "../Button/Button";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
 
@@ -15,7 +16,27 @@ interface EdgeListItemProps {
 }
 
 const StyledRoot = styled.div`
+  padding: 4px 0;
+`;
+
+const StyledForm = styled.div`
+  width: 100%;
+  display: grid;
+  grid-template-columns: 25% 25% 25% 1fr;
+  grid-gap: 8px;
+`;
+
+const StyledDelete = styled.div`
   display: flex;
+`;
+
+const StyledButton = styled(Button)`
+  flex: 1;
+`;
+
+const StyledError = styled.div`
+  padding: 4px 0;
+  color: #fa4d30;
 `;
 
 export const EdgeListItem: React.FC<EdgeListItemProps> = ({
@@ -25,16 +46,34 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
   onDelete,
   onChange,
 }) => {
+  const [error, setError] = React.useState<string | null>(null);
+
   const handleChangeFrom = React.useCallback(
     (value: string) => {
-      onChange({ ...edge, from: value });
+      if (!value) {
+        return;
+      }
+      if (value === edge.to) {
+        setError("From and To vertices must be different");
+      } else {
+        setError(null);
+        onChange({ ...edge, from: value });
+      }
     },
     [onChange, edge]
   );
 
   const handleChangeTo = React.useCallback(
     (value: string) => {
-      onChange({ ...edge, to: value });
+      if (!value) {
+        return;
+      }
+      if (value === edge.from) {
+        setError("From and To vertices must be different");
+      } else {
+        setError(null);
+        onChange({ ...edge, to: value });
+      }
     },
     [onChange, edge]
   );
@@ -42,13 +81,11 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
   const handleChangeCost = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const cost = parseInt(event.target.value, 10);
-      if (cost <= 0) {
+      if (Number.isNaN(cost)) {
         return;
       }
 
-      if (!Number.isNaN(cost)) {
-        onChange({ ...edge, cost });
-      }
+      onChange({ ...edge, cost });
     },
     [onChange, edge]
   );
@@ -67,33 +104,29 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
 
   return (
     <StyledRoot>
-      {deleteStatus ? (
-        <>
-          <button onClick={handleDeleteConfirm}>confirm</button>
-          <button onClick={handleDeleteCancel}>cancel</button>
-        </>
-      ) : (
-        <>
-          <Dropdown
-            choices={choices}
-            value={edge.from}
-            onChange={handleChangeFrom}
-          />
-          <Dropdown
-            choices={choices}
-            value={edge.to}
-            onChange={handleChangeTo}
-          />
+      <StyledForm>
+        <Dropdown
+          choices={choices}
+          value={edge.from}
+          onChange={handleChangeFrom}
+        />
+        <Dropdown choices={choices} value={edge.to} onChange={handleChangeTo} />
 
-          <TextField
-            type="number"
-            value={edge.cost}
-            onChange={handleChangeCost}
-          />
-
-          <button onClick={handleDeleteAsk}>X</button>
-        </>
-      )}
+        <TextField
+          type="number"
+          value={edge.cost}
+          onChange={handleChangeCost}
+        />
+        {deleteStatus ? (
+          <StyledDelete>
+            <StyledButton onClick={handleDeleteConfirm}>✓</StyledButton>
+            <StyledButton onClick={handleDeleteCancel}>&times;</StyledButton>
+          </StyledDelete>
+        ) : (
+          <StyledButton onClick={handleDeleteAsk}>&times;</StyledButton>
+        )}
+      </StyledForm>
+      {error && <StyledError>{error}</StyledError>}
     </StyledRoot>
   );
 };

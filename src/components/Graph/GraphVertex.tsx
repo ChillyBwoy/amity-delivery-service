@@ -1,24 +1,36 @@
 import React from "react";
 
+import { Vertex } from "../../types";
 import { useGraphColor } from "./Graph.hooks";
-import { GraphVertex as GraphVertexProps } from "./Graph.types";
+import { GraphVertex as BaseGraphVertexProps } from "./Graph.types";
+
+interface GraphVertexProps extends BaseGraphVertexProps {
+  onClick?: (vertex: Vertex) => void;
+}
 
 export const GraphVertex: React.FC<GraphVertexProps> = ({
   position,
   name,
   color,
   radius,
+  onClick,
 }) => {
-  const stroke = useGraphColor(color);
+  const clr = useGraphColor(color);
+
+  const handleClick = React.useCallback(() => {
+    if (onClick) {
+      onClick(name);
+    }
+  }, [name, onClick]);
 
   return (
-    <g>
+    <g onClick={handleClick} style={{ cursor: "pointer" }}>
       <circle
         cx={position.x}
         cy={position.y}
         r={radius}
-        fill="none"
-        stroke={stroke}
+        fill="transparent"
+        stroke={clr}
         strokeWidth={3}
       />
       <text
@@ -26,8 +38,8 @@ export const GraphVertex: React.FC<GraphVertexProps> = ({
         alignmentBaseline="middle"
         x={position.x}
         y={position.y}
-        stroke={stroke}
-        strokeWidth={1}
+        fill={clr}
+        stroke={clr}
       >
         {name}
       </text>

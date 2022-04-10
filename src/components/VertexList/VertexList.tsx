@@ -4,7 +4,6 @@ import { useItemDeleteHandler } from "../../hooks/useItemDeleteHandler";
 import { AppStoreContext } from "../../store";
 import { vertexDeleteAction } from "../../store/graph/actions";
 
-import { VertexListForm } from "./VertexListForm";
 import { VertexListItem } from "./VertexListItem";
 
 const StyledRoot = styled.div``;
@@ -26,8 +25,6 @@ export const VertexList: React.FC = () => {
           deleteStatus={v === itemToDelete}
         />
       ))}
-      <hr />
-      <VertexListForm />
     </StyledRoot>
   );
 };

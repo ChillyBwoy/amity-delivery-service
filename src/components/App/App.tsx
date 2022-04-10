@@ -10,11 +10,12 @@ import { RoutePlanner } from "../RoutePlanner/RoutePlanner";
 import { EdgeList } from "../EdgeList/EdgeList";
 import { VertexList } from "../VertexList/VertexList";
 import { RouteCalculator } from "../RouteCalculator/RouteCalculator";
+import { VertexListForm } from "../VertexList/VertexListForm";
 
 const StyledRoot = styled.div`
   height: 100%;
   display: grid;
-  grid-template-rows: 5.25rem 1fr;
+  grid-template-rows: 5.25rem 1fr 30%;
   grid-template-columns: 25% 1fr 25%;
 `;
 
@@ -27,20 +28,38 @@ const StyledHeader = styled.header`
   display: flex;
   flex-direction: row;
   align-items: center;
+  border-bottom: 1px solid rgba(211, 220, 228, 1);
 `;
 
 const StyledContent = styled.div`
   display: grid;
 `;
 
-const StyledLeftSidebar = styled.div`
-  box-sizing: border-box;
-  padding: 40px; ;
+const StyledBlock = styled.div`
+  padding: 20px;
+  flex: 1;
 `;
 
-const StyledRightSidebar = styled.div`
+const StyledPanel = styled.div`
   box-sizing: border-box;
-  padding: 40px; ;
+  background-color: rgba(245, 247, 249, 1);
+`;
+
+const StyledLeftSidebar = styled(StyledPanel)`
+  overflow-y: scroll;
+  border-right: 1px solid rgba(211, 220, 228, 1);
+`;
+
+const StyledRightSidebar = styled(StyledPanel)`
+  overflow-y: scroll;
+  border-left: 1px solid rgba(211, 220, 228, 1);
+`;
+
+const StyledBottomBar = styled(StyledPanel)`
+  border-top: 1px solid rgba(211, 220, 228, 1);
+  grid-column-start: 1;
+  grid-column-end: 4;
+  display: flex;
 `;
 
 export const App: React.FC = () => {
@@ -53,19 +72,29 @@ export const App: React.FC = () => {
         <StyledRoot>
           <StyledHeader>Amity Delivery Service</StyledHeader>
           <StyledLeftSidebar>
-            <VertexList />
-            <hr />
-            <EdgeList />
-            <hr />
+            <StyledBlock>
+              <VertexListForm />
+            </StyledBlock>
+            <StyledBlock>
+              <VertexList />
+            </StyledBlock>
           </StyledLeftSidebar>
           <StyledContent>
             <Graph />
           </StyledContent>
           <StyledRightSidebar>
-            <RoutePlanner />
-            <hr />
-            <RouteCalculator />
+            <StyledBlock>
+              <EdgeList />
+            </StyledBlock>
           </StyledRightSidebar>
+          <StyledBottomBar>
+            <StyledBlock>
+              <RoutePlanner />
+            </StyledBlock>
+            <StyledBlock>
+              <RouteCalculator />
+            </StyledBlock>
+          </StyledBottomBar>
         </StyledRoot>
       </AppStoreContextProvider>
     </>
