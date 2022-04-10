@@ -5,6 +5,7 @@ import {
   EdgeUpdateAction,
   EdgeDeleteAction,
   VertexDeleteAction,
+  EdgeAddAction,
 } from "./types";
 
 export function vertextAddAction(vertex: Vertex): VertexAddAction {
@@ -18,6 +19,13 @@ export function vertexDeleteAction(vertex: Vertex): VertexDeleteAction {
   return {
     type: GraphActionType.VertexDelete,
     vertex,
+  };
+}
+
+export function edgeAddAction(edge: Edge): EdgeAddAction {
+  return {
+    type: GraphActionType.EdgeAdd,
+    edge,
   };
 }
 

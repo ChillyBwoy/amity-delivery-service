@@ -19,12 +19,23 @@ export function useGraphColor(clr?: GraphColor): string {
   }
 }
 
+function adjustVector(vec1: Vector2, vec2: Vector2, radius: number): Vector2 {
+  const L = Math.sqrt(
+    Math.pow(vec2.x - vec1.x, 2) + Math.pow(vec2.y - vec1.y, 2)
+  );
+
+  const x = vec1.x + (radius / L) * (vec2.x - vec1.x);
+  const y = vec1.y + (radius / L) * (vec2.y - vec1.y);
+
+  return { x, y };
+}
+
 interface UseGraphResult {
   vertices: Array<GraphVertex>;
   edges: Array<GraphEdge>;
 }
 
-export function useGraph(viewBox: Vector2): UseGraphResult {
+export function useGraph(viewBox: Vector2, radius: number): UseGraphResult {
   const { state } = React.useContext(AppStoreContext);
 
   const vertexMap = React.useMemo(() => {
@@ -49,11 +60,12 @@ export function useGraph(viewBox: Vector2): UseGraphResult {
       dict[name] = {
         name,
         position: { x, y },
+        radius,
       };
     }
 
     return dict;
-  }, [state.graph.vertices, viewBox]);
+  }, [radius, state.graph.vertices, viewBox]);
 
   const edges = React.useMemo(() => {
     const result: Array<GraphEdge> = [];
@@ -62,15 +74,17 @@ export function useGraph(viewBox: Vector2): UseGraphResult {
       const from = vertexMap[edge.from];
       const to = vertexMap[edge.to];
 
-      result.push({
-        from: from.position,
-        to: to.position,
-        cost: edge.cost,
-      });
+      if (to.position.x !== 0 && to.position.y !== 0) {
+        result.push({
+          from: adjustVector(to.position, from.position, radius),
+          to: adjustVector(from.position, to.position, radius),
+          cost: edge.cost,
+        });
+      }
     }
 
     return result;
-  }, [state.graph.edges, vertexMap]);
+  }, [radius, state.graph.edges, vertexMap]);
 
   return {
     edges,

@@ -1,5 +1,4 @@
 import React from "react";
-import { GRAPH_VERTEX_RADIUS } from "./Graph.constants";
 
 import { useGraphColor } from "./Graph.hooks";
 import { GraphVertex as GraphVertexProps } from "./Graph.types";
@@ -8,6 +7,7 @@ export const GraphVertex: React.FC<GraphVertexProps> = ({
   position,
   name,
   color,
+  radius,
 }) => {
   const stroke = useGraphColor(color);
 
@@ -16,7 +16,7 @@ export const GraphVertex: React.FC<GraphVertexProps> = ({
       <circle
         cx={position.x}
         cy={position.y}
-        r={GRAPH_VERTEX_RADIUS}
+        r={radius}
         fill="none"
         stroke={stroke}
         strokeWidth={3}

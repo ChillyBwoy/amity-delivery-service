@@ -11,6 +11,7 @@ export interface GraphViewBox {
 export type GraphColor = "default" | "selected" | "active";
 
 export interface GraphVertex {
+  radius: number;
   name: string;
   position: Vector2;
   color?: GraphColor;

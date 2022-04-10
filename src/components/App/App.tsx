@@ -6,7 +6,7 @@ import { AppStoreContextProvider } from "../../store";
 import { Graph } from "../Graph/Graph";
 
 import { GlobalStyles } from "../GlobalStyles/GlobalStyles";
-import { RouteCalculator } from "../RouteCalculator/RouteCalculator";
+import { RoutePlanner } from "../RoutePlanner/RoutePlanner";
 import { EdgeList } from "../EdgeList/EdgeList";
 import { VertexList } from "../VertexList/VertexList";
 
@@ -54,7 +54,7 @@ export const App: React.FC = () => {
             <hr />
             <EdgeList />
             <hr />
-            <RouteCalculator />
+            <RoutePlanner />
           </StyledSidebar>
         </StyledRoot>
       </AppStoreContextProvider>

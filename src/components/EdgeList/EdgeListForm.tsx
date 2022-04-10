@@ -1,6 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-import { Vertex } from "../../types";
+
+import { AppStoreContext } from "../../store";
+import { edgeAddAction } from "../../store/graph/actions";
+import { Edge, Vertex } from "../../types";
 
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
@@ -14,6 +17,8 @@ const StyledRoot = styled.div`
 `;
 
 export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
+  const { dispatch } = React.useContext(AppStoreContext);
+
   const [from, setFrom] = React.useState<Vertex | undefined>(undefined);
   const [to, setTo] = React.useState<Vertex | undefined>(undefined);
   const [cost, setCost] = React.useState(1);
@@ -36,12 +41,29 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
     []
   );
 
+  const handleSubmit = React.useCallback(() => {
+    if (cost && from && to) {
+      const edge: Edge = {
+        id: `${Math.random()}`,
+        cost,
+        from,
+        to,
+      };
+
+      dispatch(edgeAddAction(edge));
+
+      setCost(1);
+      setFrom(undefined);
+      setTo(undefined);
+    }
+  }, [cost, dispatch, from, to]);
+
   return (
     <StyledRoot>
       <Dropdown choices={choices} value={from} onChange={handleChangeFrom} />
       <Dropdown choices={choices} value={to} onChange={handleChangeTo} />
       <TextField type="number" value={cost} onChange={handleChangeCost} />
-      <button>Add</button>
+      <button onClick={handleSubmit}>Add</button>
     </StyledRoot>
   );
 };

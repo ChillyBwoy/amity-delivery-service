@@ -3,6 +3,7 @@ import { Edge, Vertex } from "../../types";
 export enum GraphActionType {
   VertexAdd = "VERTEX_ADD",
   VertexDelete = "VERTEX_DELETE",
+  EdgeAdd = "EDGE_ADD",
   EdgeUpdate = "EDGE_UPDATE",
   EdgeDelete = "EDGE_DELETE",
 }
@@ -15,6 +16,11 @@ export interface VertexAddAction {
 export interface VertexDeleteAction {
   type: GraphActionType.VertexDelete;
   vertex: Vertex;
+}
+
+export interface EdgeAddAction {
+  type: GraphActionType.EdgeAdd;
+  edge: Edge;
 }
 
 export interface EdgeUpdateAction {
@@ -30,6 +36,7 @@ export interface EdgeDeleteAction {
 export type GraphAction =
   | VertexAddAction
   | VertexDeleteAction
+  | EdgeAddAction
   | EdgeUpdateAction
   | EdgeDeleteAction;
 

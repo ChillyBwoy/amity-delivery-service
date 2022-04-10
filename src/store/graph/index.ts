@@ -23,6 +23,16 @@ export const reducer = (state: GraphState, action: GraphAction): GraphState => {
       };
     }
 
+    case GraphActionType.EdgeAdd: {
+      const newEdges = [...state.edges];
+      newEdges.push(action.edge);
+
+      return {
+        ...state,
+        edges: newEdges,
+      };
+    }
+
     case GraphActionType.EdgeUpdate: {
       const index = state.edges.findIndex((r) => r.id === action.edge.id);
       if (index === -1) {

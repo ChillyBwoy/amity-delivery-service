@@ -2,6 +2,7 @@ import React from "react";
 
 import { useGraphColor } from "./Graph.hooks";
 import { GraphEdge as GraphEdgeProps } from "./Graph.types";
+import { useArc } from "./GraphEdge.hooks";
 
 export const GraphEdge: React.FC<GraphEdgeProps> = ({
   from,
@@ -11,34 +12,35 @@ export const GraphEdge: React.FC<GraphEdgeProps> = ({
 }) => {
   const fill = useGraphColor(color);
 
+  const { path, center } = useArc(from, to);
+
   return (
     <g>
       <defs>
         <marker
-          id="arrowhead"
-          markerWidth="10"
-          markerHeight="7"
+          id="arrow"
+          viewBox="0 0 60 60"
           refX="0"
-          refY="3.5"
+          refY="30"
+          markerUnits="strokeWidth"
+          markerWidth="8"
+          markerHeight="10"
           orient="auto"
-          fill={fill}
         >
-          <polygon points="0 0, 10 3.5, 0 7" />
+          <path d="M 60 0 L 0 30 L 60 60 z" fill={fill} />
         </marker>
       </defs>
 
-      <text x={(from.x + to.x) / 2} y={(from.y + to.y) / 2}>
+      <text x={center.x} y={center.y}>
         {cost}
       </text>
 
-      <line
-        x1={from.x}
-        y1={from.y}
-        x2={to.x}
-        y2={to.y}
+      <path
+        d={path}
         stroke={fill}
+        fill="transparent"
         strokeWidth="2"
-        markerEnd="url(#arrowhead)"
+        markerStart="url(#arrow)"
       />
     </g>
   );

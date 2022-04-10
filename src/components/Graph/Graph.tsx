@@ -50,7 +50,7 @@ export const Graph: React.FC = () => {
     };
   }, []);
 
-  const { vertices, edges } = useGraph(viewBox);
+  const { vertices, edges } = useGraph(viewBox, 20);
 
   return (
     <StyledRoot ref={$rootRef}>
