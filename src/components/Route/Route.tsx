@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { Edge } from "../../types";
 
@@ -7,6 +7,7 @@ import { Ball } from "../Ball/Ball";
 
 interface RouteProps {
   route: Array<Edge>;
+  selected?: boolean;
   onClick?: (route: Array<Edge>) => void;
 }
 
@@ -25,7 +26,15 @@ const StyledCost = styled(Ball)`
   color: #000;
 `;
 
-export const Route: React.FC<RouteProps> = ({ route, onClick }) => {
+const StyledBall = styled(Ball)<{ selected?: boolean }>`
+  ${({ selected }) =>
+    selected &&
+    css`
+      background-color: #ffd400;
+    `}
+`;
+
+export const Route: React.FC<RouteProps> = ({ route, selected, onClick }) => {
   const { path, cost } = React.useMemo(() => {
     const result = [];
     let cost = 0;
@@ -53,9 +62,9 @@ export const Route: React.FC<RouteProps> = ({ route, onClick }) => {
   return (
     <StyledRoot onClick={handleClick}>
       {path.map((vertex, i) => (
-        <Ball key={i} arrow>
+        <StyledBall key={i} selected={selected} arrow>
           {vertex}
-        </Ball>
+        </StyledBall>
       ))}
       {cost > 0 && <StyledCost>{cost}</StyledCost>}
     </StyledRoot>

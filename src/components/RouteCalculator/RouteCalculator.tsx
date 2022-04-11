@@ -36,6 +36,7 @@ export const RouteCalculator: React.FC = () => {
   const [maxStops, setMaxStops] = React.useState(10);
   const choices = useVerticesChoices(state.graph.vertices);
   const [routeList, setRouteList] = React.useState<Array<Edge[]>>([]);
+  const [selectedRoute, setSelectedRoute] = React.useState<number>(-1);
 
   const handleChangeFrom = React.useCallback((value: Vertex) => {
     setFrom(value);
@@ -61,14 +62,15 @@ export const RouteCalculator: React.FC = () => {
     }
 
     const newRoute = findRoutes(state.graph.edges, from, to, maxStops);
-
+    setSelectedRoute(-1);
     setRouteList(newRoute);
   }, [to, from, state.graph.edges, maxStops]);
 
   const handleRouteClick = React.useCallback(
-    (route: Array<Edge>) => {
+    (route: Array<Edge>, ind: number) => {
       const ids = route.map((edge) => edge.id);
 
+      setSelectedRoute(ind);
       dispatch(selectEdgesAction(ids));
     },
     [dispatch]
@@ -101,7 +103,12 @@ export const RouteCalculator: React.FC = () => {
       {routeList.length > 0 ? (
         <StyledList>
           {routeList.map((route, i) => (
-            <Route key={i} route={route} onClick={handleRouteClick} />
+            <Route
+              key={i}
+              route={route}
+              onClick={(route) => handleRouteClick(route, i)}
+              selected={selectedRoute === i}
+            />
           ))}
         </StyledList>
       ) : (

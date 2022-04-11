@@ -6,16 +6,16 @@ import { GraphColor, GraphEdge, GraphVertex, Vector2 } from "./Graph.types";
 export function useGraphColor(clr?: GraphColor): string {
   switch (clr) {
     case "default":
-      return "#292B32";
+      return "#000";
 
     case "selected":
-      return "#1dc497";
+      return "#ffd400";
 
     case "active":
       return "#1054DE";
 
     default:
-      return "#292B32";
+      return "#1dc497";
   }
 }
 
