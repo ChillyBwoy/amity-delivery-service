@@ -57,13 +57,7 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
 
   const handleSubmit = React.useCallback(() => {
     try {
-      const edge = validateEdge(
-        state.graph.edges,
-        `${from}${to}`,
-        from,
-        to,
-        cost
-      );
+      const edge = validateEdge(state.graph, `${from}${to}`, from, to, cost);
 
       dispatch(edgeAddAction(edge));
 
@@ -77,7 +71,7 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
         setError("Inknown error");
       }
     }
-  }, [cost, dispatch, from, state.graph.edges, to]);
+  }, [cost, dispatch, from, state.graph, to]);
 
   return (
     <StyledRoot>
@@ -99,6 +93,7 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
           value={cost}
           onChange={handleChangeCost}
           title="Cost"
+          min={1}
         />
         <Button onClick={handleSubmit}>Add</Button>
       </StyledForm>

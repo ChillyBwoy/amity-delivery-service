@@ -94,7 +94,7 @@ export function useGraph(viewBox: Vector2, radius: number): UseGraphResult {
     }
 
     return result;
-  }, [radius, state.graph.edges, vertexMap]);
+  }, [radius, selectedEdges, state.graph.edges, vertexMap]);
 
   return {
     edges,

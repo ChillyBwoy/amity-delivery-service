@@ -43,7 +43,7 @@ export const EdgeList: React.FC = () => {
         <EdgeListItem
           key={index}
           edge={edge}
-          edges={state.graph.edges}
+          graph={state.graph}
           choices={choices}
           onDelete={handleDelete}
           onChange={handleEdgeChange}

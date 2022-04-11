@@ -20,6 +20,7 @@ const StyledRoot = styled.div`
 
 const StyledCost = styled(Ball)`
   font-size: 1.5rem;
+  margin: 10px;
   background: transparent;
   color: #000;
 `;

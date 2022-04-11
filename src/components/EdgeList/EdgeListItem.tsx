@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 
 import { ItemDeleteHandlerType } from "../../hooks/useItemDeleteHandler";
+import { GraphState } from "../../store/graph/types";
 import { Edge } from "../../types";
 import { Button } from "../Button/Button";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
@@ -10,7 +11,7 @@ import { validateEdge } from "./EdgeList.tools";
 
 interface EdgeListItemProps {
   edge: Edge;
-  edges: Array<Edge>;
+  graph: GraphState;
   choices: Array<DropdownOption>;
   deleteStatus: boolean;
   onDelete: ItemDeleteHandlerType;
@@ -43,8 +44,8 @@ const StyledError = styled.div`
 
 export const EdgeListItem: React.FC<EdgeListItemProps> = ({
   choices,
+  graph,
   edge,
-  edges,
   deleteStatus,
   onDelete,
   onChange,
@@ -54,7 +55,7 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
   const handleChangeFrom = React.useCallback(
     (value: string) => {
       try {
-        const newEdge = validateEdge(edges, edge.id, value, edge.to, edge.cost);
+        const newEdge = validateEdge(graph, edge.id, value, edge.to, edge.cost);
         setError(null);
         onChange(newEdge);
       } catch (error) {
@@ -63,14 +64,14 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
         }
       }
     },
-    [edges, edge, onChange]
+    [graph, edge, onChange]
   );
 
   const handleChangeTo = React.useCallback(
     (value: string) => {
       try {
         const newEdge = validateEdge(
-          edges,
+          graph,
           edge.id,
           edge.from,
           value,
@@ -84,7 +85,7 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
         }
       }
     },
-    [edges, edge, onChange]
+    [graph, edge, onChange]
   );
 
   const handleChangeCost = React.useCallback(
@@ -124,6 +125,7 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
         <TextField
           type="number"
           value={edge.cost}
+          min={1}
           onChange={handleChangeCost}
         />
         {deleteStatus ? (
