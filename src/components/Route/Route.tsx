@@ -12,6 +12,7 @@ interface RouteProps {
 const StyledRoot = styled.div`
   display: flex;
   flex-wrap: wrap;
+  overflow: scroll;
   padding: 12px 0;
 `;
 

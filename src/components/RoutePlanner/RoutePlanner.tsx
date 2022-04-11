@@ -76,8 +76,12 @@ export const RoutePlanner: React.FC = () => {
     <StyledRoot>
       <Button onClick={handleResetClick}>reset</Button>
       <StyledChoices>
-        {vertices.map((v, i) => (
-          <StyledChoiceBall key={i} onClick={() => handleAddRoute(v)}>
+        {state.graph.vertices.map((v, i) => (
+          <StyledChoiceBall
+            key={i}
+            onClick={() => vertices.includes(v) && handleAddRoute(v)}
+            disabled={!vertices.includes(v)}
+          >
             {v}
           </StyledChoiceBall>
         ))}

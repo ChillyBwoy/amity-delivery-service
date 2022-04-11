@@ -15,7 +15,7 @@ export function appStateMock() {
     }
 
     edges.push({
-      id: `${Math.random().toString().slice(2, 10)}`,
+      id: `${raw.from}${raw.to}`,
       cost: raw.cost,
       from: raw.from,
       to: raw.to,

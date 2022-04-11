@@ -5,10 +5,11 @@ interface VertexProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string;
   arrow?: boolean;
   children: React.ReactNode;
+  disabled?: boolean;
   onClick?: () => void;
 }
 
-const StyledRoot = styled.div<{ arrow?: boolean }>`
+const StyledRoot = styled.div<{ arrow?: boolean; disabled?: boolean }>`
   width: 40px;
   height: 40px;
 
@@ -21,6 +22,13 @@ const StyledRoot = styled.div<{ arrow?: boolean }>`
   background: #1dc497;
   color: #fff;
   border-radius: 50%;
+
+  ${({ disabled }) =>
+    disabled &&
+    css`
+      opacity: 0.25;
+      cursor: default;
+    `}
 
   ${({ arrow }) =>
     arrow &&
@@ -55,10 +63,16 @@ export const Ball: React.FC<VertexProps> = ({
   arrow,
   className,
   children,
+  disabled,
   ...restProps
 }) => {
   return (
-    <StyledRoot {...restProps} className={className} arrow={arrow}>
+    <StyledRoot
+      {...restProps}
+      className={className}
+      arrow={arrow}
+      disabled={disabled}
+    >
       {children}
     </StyledRoot>
   );
