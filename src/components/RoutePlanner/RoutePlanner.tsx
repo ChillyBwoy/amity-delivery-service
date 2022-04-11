@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { AppStoreContext } from "../../store";
 import { Vertex } from "../../types";
 import { Ball } from "../Ball/Ball";
-import { Button } from "../Button/Button";
 
 import { useRouteTotalCost } from "./RoutePlanner.hooks";
 
@@ -16,25 +15,30 @@ const StyledPath = styled.div`
 `;
 
 const StyledChoices = styled.div`
+  padding: 12px 0;
   display: flex;
   flex-wrap: wrap;
-  padding: 12px 0;
+  align-items: center;
 `;
 
-const StyledCost = styled(Ball)`
+const StyledChoiceBall = styled(Ball)`
+  background-color: #ffd400;
+  cursor: pointer;
+  margin: 10px;
+
+  &:first-child {
+    margin-left: 0;
+  }
+`;
+
+const StyledCost = styled(StyledChoiceBall)`
   font-size: 1.5rem;
   background: transparent;
   color: #000;
 `;
 
-const StyledChoiceBall = styled(Ball)`
-  margin: 0 4px;
-  background-color: #ffd400;
-  cursor: pointer;
-
-  &:first-child {
-    margin-left: 0;
-  }
+const StyledResetBall = styled(StyledChoiceBall)`
+  background-color: #fa4d30;
 `;
 
 export const RoutePlanner: React.FC = () => {
@@ -74,7 +78,6 @@ export const RoutePlanner: React.FC = () => {
 
   return (
     <StyledRoot>
-      <Button onClick={handleResetClick}>reset</Button>
       <StyledChoices>
         {state.graph.vertices.map((v, i) => (
           <StyledChoiceBall
@@ -86,13 +89,21 @@ export const RoutePlanner: React.FC = () => {
           </StyledChoiceBall>
         ))}
       </StyledChoices>
+
       <StyledPath>
+        {route.length > 0 && (
+          <StyledResetBall onClick={handleResetClick}>&times;</StyledResetBall>
+        )}
         {route.map((r, i) => (
-          <Ball key={i} arrow={route.length > 1}>
+          <Ball key={i} arrow>
             {r}
           </Ball>
         ))}
-        {totalCost > 0 && <StyledCost>{totalCost}</StyledCost>}
+        {route.length === 1 ? (
+          <StyledCost>?</StyledCost>
+        ) : (
+          <>{totalCost > 0 && <StyledCost>{totalCost}</StyledCost>}</>
+        )}
       </StyledPath>
     </StyledRoot>
   );

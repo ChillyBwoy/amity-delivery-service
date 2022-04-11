@@ -1,6 +1,7 @@
 export enum ViewActionType {
   SelectEdges = "@VIEWS/SELECT_EDGES",
   ResetSelectedEdges = "@VIEWS/RESET_SELECTED_EDGES",
+  SetActiveTab = "@VIEWS/SET_ACTIVE_TAB",
 }
 
 export interface SelectEdgesAction {
@@ -12,8 +13,17 @@ export interface ResetEdgesAction {
   type: ViewActionType.ResetSelectedEdges;
 }
 
-export type ViewAction = SelectEdgesAction | ResetEdgesAction;
+export interface SetActiveTabAction {
+  type: ViewActionType.SetActiveTab;
+  tab: ViewState["tab"];
+}
+
+export type ViewAction =
+  | SelectEdgesAction
+  | ResetEdgesAction
+  | SetActiveTabAction;
 
 export interface ViewState {
   edgeIds: Array<string>;
+  tab: "vertices" | "edges" | "route_planner" | "route_search";
 }

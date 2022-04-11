@@ -15,15 +15,33 @@ interface VertexListItemProps {
 
 const StyledRoot = styled.div`
   display: flex;
-  padding: 8px;
+  padding: 12px;
+  align-items: center;
+  justify-content: center;
+  position: relative;
 `;
 
 const StyledDelete = styled.div`
   display: flex;
 `;
 
+const StyledBall = styled(Ball)`
+  cursor: pointer;
+`;
+
 const StyledButton = styled(Button)`
   margin: 0 4px;
+`;
+
+const StyledDeleteConfirm = styled.div`
+  background: rgba(0, 0, 0, 0.25);
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
 `;
 
 export const VertexListItem: React.FC<VertexListItemProps> = ({
@@ -45,15 +63,13 @@ export const VertexListItem: React.FC<VertexListItemProps> = ({
 
   return (
     <StyledRoot>
-      <Ball>{vertex}</Ball>
+      <StyledBall onClick={handleDeleteAsk}>{vertex}</StyledBall>
       <StyledDelete>
-        {deleteStatus ? (
-          <>
+        {deleteStatus && (
+          <StyledDeleteConfirm>
             <StyledButton onClick={handleDeleteConfirm}>✓</StyledButton>
             <StyledButton onClick={handleDeleteCancel}>&times;</StyledButton>
-          </>
-        ) : (
-          <StyledButton onClick={handleDeleteAsk}>&times;</StyledButton>
+          </StyledDeleteConfirm>
         )}
       </StyledDelete>
     </StyledRoot>

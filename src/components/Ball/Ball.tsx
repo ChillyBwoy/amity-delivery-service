@@ -33,7 +33,7 @@ const StyledRoot = styled.div<{ arrow?: boolean; disabled?: boolean }>`
   ${({ arrow }) =>
     arrow &&
     css`
-      margin: 0 10px;
+      margin: 10px;
 
       &:first-child {
         margin-left: 0;

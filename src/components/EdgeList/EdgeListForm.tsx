@@ -3,11 +3,12 @@ import styled from "styled-components";
 
 import { AppStoreContext } from "../../store";
 import { edgeAddAction } from "../../store/graph/actions";
-import { Edge, Vertex } from "../../types";
+import { Vertex } from "../../types";
 import { Button } from "../Button/Button";
 
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
+import { validateEdge } from "./EdgeList.tools";
 
 interface EdgeListFormProps {
   choices: Array<DropdownOption>;
@@ -15,7 +16,7 @@ interface EdgeListFormProps {
 
 const StyledRoot = styled.div``;
 
-const StyledContent = styled.div`
+const StyledForm = styled.div`
   display: grid;
   grid-template-columns: 25% 25% 25% 1fr;
   grid-gap: 8px;
@@ -55,40 +56,32 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
   );
 
   const handleSubmit = React.useCallback(() => {
-    if (!from || !to || !cost) {
-      return;
+    try {
+      const edge = validateEdge(
+        state.graph.edges,
+        `${from}${to}`,
+        from,
+        to,
+        cost
+      );
+
+      dispatch(edgeAddAction(edge));
+
+      setCost(1);
+      setFrom("");
+      setTo("");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Inknown error");
+      }
     }
-
-    if (from === to) {
-      setError("From and To cannot be the same");
-      return;
-    }
-
-    const matchedEdge = state.graph.edges.find(
-      (e) => e.from === from && e.to === to
-    );
-    if (matchedEdge) {
-      setError("Edge already exists");
-      return;
-    }
-
-    const edge: Edge = {
-      id: `${Math.random()}`,
-      cost,
-      from,
-      to,
-    };
-
-    dispatch(edgeAddAction(edge));
-
-    setCost(1);
-    setFrom("");
-    setTo("");
   }, [cost, dispatch, from, state.graph.edges, to]);
 
   return (
     <StyledRoot>
-      <StyledContent>
+      <StyledForm>
         <Dropdown
           choices={choices}
           value={from}
@@ -108,7 +101,7 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
           title="Cost"
         />
         <Button onClick={handleSubmit}>Add</Button>
-      </StyledContent>
+      </StyledForm>
       {error && <StyledError>{error}</StyledError>}
     </StyledRoot>
   );

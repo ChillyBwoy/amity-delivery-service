@@ -1,4 +1,10 @@
-import { ViewActionType, SelectEdgesAction, ResetEdgesAction } from "./types";
+import {
+  ViewActionType,
+  SelectEdgesAction,
+  ResetEdgesAction,
+  SetActiveTabAction,
+  ViewState,
+} from "./types";
 
 export function selectEdgesAction(ids: Array<string>): SelectEdgesAction {
   return {
@@ -10,5 +16,12 @@ export function selectEdgesAction(ids: Array<string>): SelectEdgesAction {
 export function resetEdgesAction(): ResetEdgesAction {
   return {
     type: ViewActionType.ResetSelectedEdges,
+  };
+}
+
+export function setActiveTabAction(tab: ViewState["tab"]): SetActiveTabAction {
+  return {
+    type: ViewActionType.SetActiveTab,
+    tab,
   };
 }

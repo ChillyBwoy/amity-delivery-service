@@ -6,9 +6,11 @@ import { Edge } from "../../types";
 import { Button } from "../Button/Button";
 import { Dropdown, DropdownOption } from "../Dropdown/Dropdown";
 import { TextField } from "../TextField/TextField";
+import { validateEdge } from "./EdgeList.tools";
 
 interface EdgeListItemProps {
   edge: Edge;
+  edges: Array<Edge>;
   choices: Array<DropdownOption>;
   deleteStatus: boolean;
   onDelete: ItemDeleteHandlerType;
@@ -42,6 +44,7 @@ const StyledError = styled.div`
 export const EdgeListItem: React.FC<EdgeListItemProps> = ({
   choices,
   edge,
+  edges,
   deleteStatus,
   onDelete,
   onChange,
@@ -50,32 +53,38 @@ export const EdgeListItem: React.FC<EdgeListItemProps> = ({
 
   const handleChangeFrom = React.useCallback(
     (value: string) => {
-      if (!value) {
-        return;
-      }
-      if (value === edge.to) {
-        setError("From and To vertices must be different");
-      } else {
+      try {
+        const newEdge = validateEdge(edges, edge.id, value, edge.to, edge.cost);
         setError(null);
-        onChange({ ...edge, from: value });
+        onChange(newEdge);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
       }
     },
-    [onChange, edge]
+    [edges, edge, onChange]
   );
 
   const handleChangeTo = React.useCallback(
     (value: string) => {
-      if (!value) {
-        return;
-      }
-      if (value === edge.from) {
-        setError("From and To vertices must be different");
-      } else {
+      try {
+        const newEdge = validateEdge(
+          edges,
+          edge.id,
+          edge.from,
+          value,
+          edge.cost
+        );
         setError(null);
-        onChange({ ...edge, to: value });
+        onChange(newEdge);
+      } catch (error) {
+        if (error instanceof Error) {
+          setError(error.message);
+        }
       }
     },
-    [onChange, edge]
+    [edges, edge, onChange]
   );
 
   const handleChangeCost = React.useCallback(

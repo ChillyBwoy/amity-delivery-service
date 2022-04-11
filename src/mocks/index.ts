@@ -30,6 +30,7 @@ export function appStateMock(): AppState {
     },
     view: {
       edgeIds: [],
+      tab: "vertices",
     },
   };
 }

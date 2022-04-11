@@ -16,6 +16,13 @@ export const reducer = (state: ViewState, action: ViewAction): ViewState => {
       };
     }
 
+    case ViewActionType.SetActiveTab: {
+      return {
+        ...state,
+        tab: action.tab,
+      };
+    }
+
     default:
       return state;
   }

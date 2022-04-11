@@ -28,14 +28,22 @@ export const EdgeList: React.FC = () => {
     dispatch(edgeDeleteAction(id));
   });
 
+  const sortedEdges = React.useMemo(() => {
+    const clone = [...state.graph.edges];
+    clone.sort((a, b) => a.from.charCodeAt(0) - b.from.charCodeAt(0));
+
+    return clone;
+  }, [state.graph.edges]);
+
   return (
     <StyledRoot>
       <EdgeListForm choices={choices} />
       <hr />
-      {state.graph.edges.map((edge, index) => (
+      {sortedEdges.map((edge, index) => (
         <EdgeListItem
           key={index}
           edge={edge}
+          edges={state.graph.edges}
           choices={choices}
           onDelete={handleDelete}
           onChange={handleEdgeChange}

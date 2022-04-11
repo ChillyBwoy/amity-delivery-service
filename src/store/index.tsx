@@ -24,6 +24,7 @@ export const initialState: AppState = {
   },
   view: {
     edgeIds: [],
+    tab: "vertices",
   },
 };
 
