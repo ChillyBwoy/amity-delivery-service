@@ -1,16 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 
-import { useMockAppState } from "../../hooks/useMockAppState";
 import { AppStoreContextProvider } from "../../store";
 import { Graph } from "../Graph/Graph";
-
 import { GlobalStyles } from "../GlobalStyles/GlobalStyles";
 import { RoutePlanner } from "../RoutePlanner/RoutePlanner";
 import { EdgeList } from "../EdgeList/EdgeList";
 import { VertexList } from "../VertexList/VertexList";
 import { RouteCalculator } from "../RouteCalculator/RouteCalculator";
 import { VertexListForm } from "../VertexList/VertexListForm";
+import { appStateMock } from "../../mocks";
 
 const StyledRoot = styled.div`
   height: 100%;
@@ -62,13 +61,13 @@ const StyledBottomBar = styled(StyledPanel)`
   display: flex;
 `;
 
-export const App: React.FC = () => {
-  const state = useMockAppState();
+const mockState = appStateMock();
 
+export const App: React.FC = () => {
   return (
     <>
       <GlobalStyles />
-      <AppStoreContextProvider state={state}>
+      <AppStoreContextProvider state={mockState}>
         <StyledRoot>
           <StyledHeader>Amity Delivery Service</StyledHeader>
           <StyledLeftSidebar>

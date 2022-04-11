@@ -3,6 +3,7 @@ import styled from "styled-components";
 
 import { useVerticesChoices } from "../../hooks/useVerticesChoices";
 import { AppStoreContext } from "../../store";
+import { selectEdgesAction } from "../../store/view/actions";
 import { Edge, Vertex } from "../../types";
 import { Button } from "../Button/Button";
 import { Dropdown } from "../Dropdown/Dropdown";
@@ -13,7 +14,7 @@ import { findRoutes } from "./RouteCalculator.utils";
 
 const StyledRoot = styled.div`
   display: grid;
-  grid-template-rows: 40px 1fr;
+  grid-template-rows: 60px 1fr;
   height: 100%;
 `;
 
@@ -29,10 +30,10 @@ const StyledList = styled.div`
 `;
 
 export const RouteCalculator: React.FC = () => {
+  const { dispatch, state } = React.useContext(AppStoreContext);
   const [from, setFrom] = React.useState<Vertex | undefined>(undefined);
   const [to, setTo] = React.useState<Vertex | undefined>(undefined);
   const [maxStops, setMaxStops] = React.useState(10);
-  const { state } = React.useContext(AppStoreContext);
   const choices = useVerticesChoices(state.graph.vertices);
   const [routeList, setRouteList] = React.useState<Array<Edge[]>>([]);
 
@@ -61,17 +62,35 @@ export const RouteCalculator: React.FC = () => {
 
     const newRoute = findRoutes(state.graph.edges, from, to, maxStops);
 
-    console.log(`Total routes: ${newRoute.length}`);
-
     setRouteList(newRoute);
   }, [to, from, state.graph.edges, maxStops]);
+
+  const handleRouteClick = React.useCallback(
+    (route: Array<Edge>) => {
+      const ids = route.map((edge) => edge.id);
+
+      dispatch(selectEdgesAction(ids));
+    },
+    [dispatch]
+  );
 
   return (
     <StyledRoot>
       <StyledForm>
-        <Dropdown choices={choices} value={from} onChange={handleChangeFrom} />
-        <Dropdown choices={choices} value={to} onChange={handleChangeTo} />
+        <Dropdown
+          choices={choices}
+          value={from}
+          onChange={handleChangeFrom}
+          title="From"
+        />
+        <Dropdown
+          choices={choices}
+          value={to}
+          onChange={handleChangeTo}
+          title="To"
+        />
         <TextField
+          title="Max stops"
           type="number"
           min={1}
           value={maxStops}
@@ -82,7 +101,7 @@ export const RouteCalculator: React.FC = () => {
       {routeList.length > 0 ? (
         <StyledList>
           {routeList.map((route, i) => (
-            <Route key={i} route={route} />
+            <Route key={i} route={route} onClick={handleRouteClick} />
           ))}
         </StyledList>
       ) : (

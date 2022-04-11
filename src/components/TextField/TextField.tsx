@@ -1,7 +1,9 @@
 import React from "react";
 import styled from "styled-components";
 
-interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+interface TextFieldProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  title?: string;
+}
 
 const StyledRoot = styled.div``;
 
@@ -17,9 +19,17 @@ const StyledInput = styled.input`
   box-sizing: border-box;
 `;
 
+const StyledLabel = styled.label``;
+
+const StyledLabelTitle = styled.span`
+  display: block;
+  margin-bottom: 4px;
+`;
+
 export const TextField: React.FC<TextFieldProps> = ({
   onChange,
   className,
+  title,
   ...restProps
 }) => {
   const handleChange = React.useCallback(
@@ -33,7 +43,10 @@ export const TextField: React.FC<TextFieldProps> = ({
 
   return (
     <StyledRoot className={className}>
-      <StyledInput {...restProps} onChange={handleChange} />
+      <StyledLabel>
+        {title && <StyledLabelTitle>{title}</StyledLabelTitle>}
+        <StyledInput {...restProps} onChange={handleChange} />
+      </StyledLabel>
     </StyledRoot>
   );
 };

@@ -7,6 +7,7 @@ import { Ball } from "../Ball/Ball";
 
 interface RouteProps {
   route: Array<Edge>;
+  onClick?: (route: Array<Edge>) => void;
 }
 
 const StyledRoot = styled.div`
@@ -14,6 +15,7 @@ const StyledRoot = styled.div`
   flex-wrap: wrap;
   overflow: scroll;
   padding: 12px 0;
+  cursor: pointer;
 `;
 
 const StyledCost = styled(Ball)`
@@ -22,7 +24,7 @@ const StyledCost = styled(Ball)`
   color: #000;
 `;
 
-export const Route: React.FC<RouteProps> = ({ route }) => {
+export const Route: React.FC<RouteProps> = ({ route, onClick }) => {
   const { path, cost } = React.useMemo(() => {
     const result = [];
     let cost = 0;
@@ -41,8 +43,14 @@ export const Route: React.FC<RouteProps> = ({ route }) => {
     return { path: result, cost };
   }, [route]);
 
+  const handleClick = React.useCallback(() => {
+    if (onClick) {
+      onClick(route);
+    }
+  }, [onClick, route]);
+
   return (
-    <StyledRoot>
+    <StyledRoot onClick={handleClick}>
       {path.map((vertex, i) => (
         <Ball key={i} arrow>
           {vertex}

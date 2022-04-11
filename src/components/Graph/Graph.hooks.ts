@@ -9,7 +9,7 @@ export function useGraphColor(clr?: GraphColor): string {
       return "#292B32";
 
     case "selected":
-      return "#FFD400";
+      return "#1dc497";
 
     case "active":
       return "#1054DE";
@@ -33,10 +33,13 @@ function adjustVector(vec1: Vector2, vec2: Vector2, radius: number): Vector2 {
 interface UseGraphResult {
   vertices: Array<GraphVertex>;
   edges: Array<GraphEdge>;
+  hasSelected: boolean;
 }
 
 export function useGraph(viewBox: Vector2, radius: number): UseGraphResult {
   const { state } = React.useContext(AppStoreContext);
+
+  const selectedEdges = state.view.edgeIds;
 
   const vertexMap = React.useMemo(() => {
     const dict: Record<string, GraphVertex> = {};
@@ -57,15 +60,20 @@ export function useGraph(viewBox: Vector2, radius: number): UseGraphResult {
       const x = centerX + lengthX * Math.cos(radians);
       const y = centerY - lengthY * Math.sin(radians);
 
+      const isSelected = Boolean(selectedEdges.find((id) => id.includes(name)));
+
       dict[name] = {
         name,
         position: { x, y },
         radius,
+        color: isSelected ? "selected" : "default",
       };
     }
 
     return dict;
-  }, [radius, state.graph.vertices, viewBox]);
+  }, [radius, selectedEdges, state.graph.vertices, viewBox]);
+
+  // console.log(vertexMap);
 
   const edges = React.useMemo(() => {
     const result: Array<GraphEdge> = [];
@@ -75,10 +83,12 @@ export function useGraph(viewBox: Vector2, radius: number): UseGraphResult {
       const to = vertexMap[edge.to];
 
       if (to.position.x !== 0 && to.position.y !== 0) {
+        const isSelected = selectedEdges.includes(`${from.name}${to.name}`);
         result.push({
           from: adjustVector(to.position, from.position, radius),
           to: adjustVector(from.position, to.position, radius),
           cost: edge.cost,
+          color: isSelected ? "selected" : "default",
         });
       }
     }
@@ -89,5 +99,6 @@ export function useGraph(viewBox: Vector2, radius: number): UseGraphResult {
   return {
     edges,
     vertices: Object.values(vertexMap),
+    hasSelected: selectedEdges.length > 0,
   };
 }

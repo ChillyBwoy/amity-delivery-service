@@ -1,8 +1,9 @@
+import { AppState } from "../store";
 import { Edge, Vertex } from "../types";
 
 import data from "./data.json";
 
-export function appStateMock() {
+export function appStateMock(): AppState {
   const cache: Record<string, boolean> = {};
 
   const edges: Array<Edge> = [];
@@ -26,6 +27,9 @@ export function appStateMock() {
     graph: {
       vertices: vertices,
       edges,
+    },
+    view: {
+      edgeIds: [],
     },
   };
 }

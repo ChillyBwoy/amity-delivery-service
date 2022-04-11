@@ -1,11 +1,11 @@
 import { Edge, Vertex } from "../../types";
 
 export enum GraphActionType {
-  VertexAdd = "VERTEX_ADD",
-  VertexDelete = "VERTEX_DELETE",
-  EdgeAdd = "EDGE_ADD",
-  EdgeUpdate = "EDGE_UPDATE",
-  EdgeDelete = "EDGE_DELETE",
+  VertexAdd = "@GRAPH/VERTEX_ADD",
+  VertexDelete = "@GRAPH/VERTEX_DELETE",
+  EdgeAdd = "@GRAPH/EDGE_ADD",
+  EdgeUpdate = "@GRAPH/EDGE_UPDATE",
+  EdgeDelete = "@GRAPH/EDGE_DELETE",
 }
 
 export interface VertexAddAction {

@@ -9,6 +9,7 @@ export interface DropdownOption {
 interface DropdownProps<T> {
   choices: Array<T>;
   value: number | string | undefined;
+  title?: string;
   onChange(value: number | string): void;
 }
 
@@ -24,8 +25,15 @@ const StyledSelect = styled.select`
   box-sizing: border-box;
 `;
 
+const StyledLabel = styled.label``;
+
+const StyledLabelTitle = styled.span`
+  display: block;
+  margin-bottom: 4px;
+`;
+
 export const Dropdown = <T extends DropdownOption>(props: DropdownProps<T>) => {
-  const { choices, value, onChange } = props;
+  const { choices, value, onChange, title } = props;
 
   const handleChange = React.useCallback(
     (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -35,13 +43,16 @@ export const Dropdown = <T extends DropdownOption>(props: DropdownProps<T>) => {
   );
 
   return (
-    <StyledSelect value={value} onChange={handleChange}>
-      <option />
-      {choices.map((choice, i) => (
-        <option key={i} value={choice.value}>
-          {choice.name}
-        </option>
-      ))}
-    </StyledSelect>
+    <StyledLabel>
+      {title && <StyledLabelTitle>{title}</StyledLabelTitle>}
+      <StyledSelect value={value} onChange={handleChange}>
+        <option />
+        {choices.map((choice, i) => (
+          <option key={i} value={choice.value}>
+            {choice.name}
+          </option>
+        ))}
+      </StyledSelect>
+    </StyledLabel>
   );
 };

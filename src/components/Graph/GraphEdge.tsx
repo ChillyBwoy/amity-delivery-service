@@ -31,7 +31,7 @@ export const GraphEdge: React.FC<GraphEdgeProps> = ({
         </marker>
       </defs>
 
-      <text x={center.x} y={center.y}>
+      <text x={center.x} y={center.y} fill={fill}>
         {cost}
       </text>
 

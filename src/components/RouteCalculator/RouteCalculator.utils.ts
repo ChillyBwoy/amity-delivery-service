@@ -10,13 +10,18 @@ export function findRoutes(
 
   const result: Array<Edge[]> = [];
 
+  /**
+   * Special case, i.e. E -> E
+   */
+  const cycle = from === to;
+
   function recur(current: Vertex, localPathList: Array<Edge>) {
     if (current === to) {
       if (localPathList.length > 0) {
         result.push([...localPathList]);
       }
 
-      if (visited[current]) {
+      if (!cycle || visited[current]) {
         return;
       }
     }

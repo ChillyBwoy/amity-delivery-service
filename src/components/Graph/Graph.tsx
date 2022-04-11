@@ -1,9 +1,12 @@
 import React from "react";
 import styled from "styled-components";
 
+import { AppStoreContext } from "../../store";
+import { resetEdgesAction } from "../../store/view/actions";
+import { Button } from "../Button/Button";
+
 import { useGraph } from "./Graph.hooks";
 import { Vector2 } from "./Graph.types";
-
 import { GraphEdge } from "./GraphEdge";
 import { GraphVertex } from "./GraphVertex";
 
@@ -21,7 +24,14 @@ const StyledSvg = styled.svg`
   bottom: 0;
 `;
 
+const StyledResetButton = styled(Button)`
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+`;
+
 export const Graph: React.FC = () => {
+  const { dispatch } = React.useContext(AppStoreContext);
   const [viewBox, setViewbox] = React.useState<Vector2>({ x: 0, y: 0 });
   const $rootRef = React.useRef<HTMLDivElement>(null);
 
@@ -49,7 +59,11 @@ export const Graph: React.FC = () => {
     };
   }, []);
 
-  const { vertices, edges } = useGraph(viewBox, 20);
+  const handleReset = React.useCallback(() => {
+    dispatch(resetEdgesAction());
+  }, [dispatch]);
+
+  const { vertices, edges, hasSelected } = useGraph(viewBox, 20);
 
   return (
     <StyledRoot ref={$rootRef}>
@@ -64,6 +78,9 @@ export const Graph: React.FC = () => {
           <GraphEdge key={i} {...edge} />
         ))}
       </StyledSvg>
+      {hasSelected && (
+        <StyledResetButton onClick={handleReset}>Reset</StyledResetButton>
+      )}
     </StyledRoot>
   );
 };

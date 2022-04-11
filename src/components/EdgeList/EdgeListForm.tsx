@@ -89,9 +89,24 @@ export const EdgeListForm: React.FC<EdgeListFormProps> = ({ choices }) => {
   return (
     <StyledRoot>
       <StyledContent>
-        <Dropdown choices={choices} value={from} onChange={handleChangeFrom} />
-        <Dropdown choices={choices} value={to} onChange={handleChangeTo} />
-        <TextField type="number" value={cost} onChange={handleChangeCost} />
+        <Dropdown
+          choices={choices}
+          value={from}
+          onChange={handleChangeFrom}
+          title="From"
+        />
+        <Dropdown
+          choices={choices}
+          value={to}
+          onChange={handleChangeTo}
+          title="To"
+        />
+        <TextField
+          type="number"
+          value={cost}
+          onChange={handleChangeCost}
+          title="Cost"
+        />
         <Button onClick={handleSubmit}>Add</Button>
       </StyledContent>
       {error && <StyledError>{error}</StyledError>}

@@ -30,6 +30,8 @@ export const EdgeList: React.FC = () => {
 
   return (
     <StyledRoot>
+      <EdgeListForm choices={choices} />
+      <hr />
       {state.graph.edges.map((edge, index) => (
         <EdgeListItem
           key={index}
@@ -40,8 +42,6 @@ export const EdgeList: React.FC = () => {
           deleteStatus={itemToDelete === edge.id}
         />
       ))}
-      <hr />
-      <EdgeListForm choices={choices} />
     </StyledRoot>
   );
 };

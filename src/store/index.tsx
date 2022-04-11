@@ -1,12 +1,15 @@
 import React from "react";
 
 import { GraphAction, GraphState } from "./graph/types";
+import { ViewAction, ViewState } from "./view/types";
 import { reducer as graphReducer } from "./graph";
+import { reducer as viewReducer } from "./view";
 
-type AppAction = GraphAction;
+type AppAction = GraphAction | ViewAction;
 
 export interface AppState {
   graph: GraphState;
+  view: ViewState;
 }
 
 interface AppStoreContextProps {
@@ -18,6 +21,9 @@ export const initialState: AppState = {
   graph: {
     edges: [],
     vertices: [],
+  },
+  view: {
+    edgeIds: [],
   },
 };
 
@@ -33,7 +39,8 @@ interface AppStoreContextProviderProps {
 
 const reducer = (state: AppState, action: AppAction): AppState => {
   return {
-    graph: graphReducer(state.graph, action),
+    graph: graphReducer(state.graph, action as GraphAction),
+    view: viewReducer(state.view, action as ViewAction),
   };
 };
 
