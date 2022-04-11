@@ -2,6 +2,10 @@
 
 Application for calculating the cost of delivery and routes
 
+<h2 style="padding: 12px 0; text-align: center;">
+  <a href="https://chillybwoy.github.io/amity-delivery-service/">Demo</a>
+</h2>
+
 ## About
 
 Features:
